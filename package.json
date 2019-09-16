@@ -16,6 +16,9 @@
     "hexo-renderer-ejs": "^0.3.0",
     "hexo-renderer-marked": "^0.3.0",
     "hexo-renderer-stylus": "^0.3.1",
-    "hexo-server": "^0.2.0"
+    "hexo-server": "^0.2.0",
+    "braces": ">=2.3.1",
+    "morgan": ">=1.9.1",
+    "lodash": ">=4.17.13"
   }
 }
