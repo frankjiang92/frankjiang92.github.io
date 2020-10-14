@@ -8,4 +8,5 @@ tags:
 
 ![we_will_be_giants](/images/hello-world/we_will_be_giants.jpg)
 
+
 <!-- more -->
