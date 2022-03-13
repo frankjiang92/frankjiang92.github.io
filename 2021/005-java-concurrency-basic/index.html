@@ -1,0 +1,725 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="你好呀">
+  <meta name="author" content="毛与帆">
+  <meta name="keywords" content="">
+  <title>深入理解Java系列 | 并发编程基础 - 毛与帆的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"frankjiang92.github.io","root":"/","version":"1.8.5","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"i66C30gscBCnbh1QrYsyrgXo-gzGzoHsz","app_key":"NUKXgtKOOWyEDz1FYJ8wrdHd","server_url":"https://i66c30gs.lc-cn-n1-shared.com"}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 45vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>毛与帆的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/more-3.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="深入理解Java系列 | 并发编程基础">
+              
+                深入理解Java系列 | 并发编程基础
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      毛与帆
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-08-29 15:41" pubdate>
+        2021年8月29日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      46
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">深入理解Java系列 | 并发编程基础</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>Hi 大家好，我是「 毛与帆 」，一个热爱技术的后端工程师，感谢你的关注！</p>
+</blockquote>
+<p><img src="../../images/cover/005-java-concurrency-basic.png" srcset="/img/loading.gif"></p>
+<p>在前面的两篇文章中<a href="/2021/003-java-blocking-queue/">深入理解Java系列 | BlockingQueue用法详解</a>和<a href="/2021/004-java-linked-blocking-queue/">深入理解Java系列 | LinkedBlockingQueue用法详解</a>，主要介绍了阻塞队列的用法；而阻塞队列在Java中主要是用来进行多线程并发编程的场景，所以从本文开始将会从浅入深的介绍Java并发编程的相关知识。</p>
+<p>首先，本文主要介绍并发编程的基础知识，现在开始吧。</p>
+<h1 id="什么是并发编程？"><a href="#什么是并发编程？" class="headerlink" title="什么是并发编程？"></a>什么是并发编程？</h1><p>所谓并发编程，其实就是指在一台计算机上，可以同时执行多个任务，目的是尽可能提高程序的执行速度。</p>
+<p>说到并发编程，不可避免的会谈到两个概念：<code>进程</code>和<code>线程</code>。</p>
+<p>对于现代很多操作系统来说，都支持多任务处理，比如我们使用一台windows的计算机，可以同时使用浏览器、编程的IDE、聊天工具、邮件等多个程序，而每个程序对于操作系统来说其实就是<code>进程</code>。</p>
+<p>所以进程就是<strong>一个正在执行的程序</strong>，一个进程是操作系统进行资源分配和管理的基本单位。</p>
+<p>对于一个进程来说，也可以同时执行多个任务，比如我们使用浏览器时，可以一边浏览网页，一边进行文件的下载，这些子任务的执行，都是依赖<code>线程</code>实现的。<strong>线程是进程的组成部分，一个进程至少有一个线程组成，多个线程共享当前进程的资源</strong>。而线程也是操作系统进行任务执行和调度的基本单位，操作系统可以控制多个线程之间交替运行，以实现并发执行的效果。</p>
+<p>OK，到这里，我们需要了解下操作系统是如何实现多线程执行的。</p>
+<p>我们知道，现代的计算机通常都由多个CPU组成，多个CPU可以同时执行多个任务；而对于单个CPU，也是可以执行多个任务。单个CPU执行多个任务的方式，是通过让各个线程交替执行，比如线程A执行1ms，线程B执行1ms，线程A再执行1ms……由于每个线程单次执行的时间特别短，所以对于我们来说感觉是多个任务同时执行。CPU依赖<strong>时间片分配算法</strong>来进行任务的切换，某个任务从未执行到执行状态的切换，就完成了一次上下文的切换。</p>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/08/image-20210831220322100.png" srcset="/img/loading.gif" alt="image-20210831220322100"></p>
+<p>所以，操作系统借助于多线程机制，实现了任务的并发执行。所以并发编程主要针对的也就是多线程场景下的编程实现。</p>
+<h1 id="为什么并发编程这么重要？"><a href="#为什么并发编程这么重要？" class="headerlink" title="为什么并发编程这么重要？"></a>为什么并发编程这么重要？</h1><p>对于任何一门编程语言来说，并发编程都是非常重要一部分知识，也是非常复杂的领域；在面试过程中，并发编程也是面试官重点考察的内容。那么，为什么并发编程这么重要呢？</p>
+<p>对并发编程知识的理解与否，决定了在日常开发中能否写出正确的程序，尤其是在涉及多线程编程开发时。在并发编程过程中，经常会遇到如下几个问题和挑战：</p>
+<h2 id="1-多线程更快吗？"><a href="#1-多线程更快吗？" class="headerlink" title="1. 多线程更快吗？"></a>1. 多线程更快吗？</h2><p><strong>不一定。</strong></p>
+<p>在上面的介绍中，我们知道多线程并发执行是依赖于CPU的时间片分配算法进行任务的调度和切换，当一个任务执行到时间后，需要将该任务的状态进行保存，然后切换到下个任务；如果需要再次执行这个任务，需要将从内存中加载任务状态并恢复，然后才可以再次执行。在这个过程中，<strong>任务从保存到加载的过程就是一次上下文切换</strong>。</p>
+<p>线程的上下文切换需要进行任务状态的存储和读取，由于上下文切换需要耗费一定的时间，如果上下文切换的时间比一个任务执行的时间比还要长时，那么使用多线程的速度将会不如单个线程。</p>
+<p>可以使用如下代码验证在不同数据量的情况下，单线程和多线程执行时间的对比（代码参考《Java并发编程的艺术》第1.1.1节）：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConcurrencyTest</span> </span>&#123;
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span>[] count = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[]&#123;<span class="hljs-number">10000</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">1000000</span>, <span class="hljs-number">10000000</span>, <span class="hljs-number">100000000</span>&#125;;
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count.length; i++) &#123;
+      System.out.println(<span class="hljs-string">&quot;===&gt; 测试数据量：&quot;</span> + count[i]);
+      <span class="hljs-comment">// 并发执行</span>
+      concurrency(count[i]);
+      <span class="hljs-comment">// 单线程执行</span>
+      serial(count[i]);
+    &#125;
+  &#125;
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">concurrency</span><span class="hljs-params">(<span class="hljs-keyword">long</span> count)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
+    <span class="hljs-keyword">long</span> start = System.currentTimeMillis();
+    Thread thread = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() &#123;
+      <span class="hljs-meta">@Override</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;
+          a += <span class="hljs-number">5</span>;
+        &#125;
+      &#125;
+    &#125;);
+    thread.start();
+    <span class="hljs-keyword">int</span> b = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;
+      b--;
+    &#125;
+    thread.join();
+    <span class="hljs-keyword">long</span> end = System.currentTimeMillis();
+    System.out.println(<span class="hljs-string">&quot;多线程执行：&quot;</span> + (end - start));
+  &#125;
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">serial</span><span class="hljs-params">(<span class="hljs-keyword">long</span> count)</span> </span>&#123;
+    <span class="hljs-keyword">long</span> start = System.currentTimeMillis();
+    <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;
+      a += <span class="hljs-number">5</span>;
+    &#125;
+    <span class="hljs-keyword">int</span> b = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;
+      b--;
+    &#125;
+    <span class="hljs-keyword">long</span> end = System.currentTimeMillis();
+    System.out.println(<span class="hljs-string">&quot;单线程执行：&quot;</span> + (end - start));
+  &#125;
+&#125;</code></pre></div>
+
+<h2 id="2-线程安全问题"><a href="#2-线程安全问题" class="headerlink" title="2. 线程安全问题"></a>2. 线程安全问题</h2><p>在并发编程中，遇到的另外一个非常棘手的问题，就是线程安全问题。在上面的介绍中讲到，线程是进程的组成部分，多个线程共享进程的资源，其中包括内存。当多个线程同时读写某个共享变量时，则可能会出现线程安全问题。</p>
+<p>下面是一个常见的例子，对一个共享变量num，分别使用两个线程进行<code>++</code>操作5万次，我们期望的最终结果应该是10万，但是代码执行之后，多次运行的结果都小于10万。这也就表明，在多线程执行过程中，出现了线程安全问题。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConcurrencyTest2</span> </span>&#123;
+  <span class="hljs-keyword">int</span> num = <span class="hljs-number">0</span>;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testThread</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
+    Thread t1 = <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">50000</span>; j++) &#123;
+        num++;
+      &#125;
+    &#125;);
+    Thread t2 = <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">50000</span>; j++) &#123;
+        num++;
+      &#125;
+    &#125;);
+    t1.start(); t2.start();
+    t1.join(); t2.join();
+    <span class="hljs-comment">// 期望是：100000</span>
+    <span class="hljs-comment">// 运行多次结果分别为：79967 97156 59108 62268 ....</span>
+    System.out.println(<span class="hljs-string">&quot;变量num : &quot;</span> + num);
+  &#125;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
+    <span class="hljs-keyword">new</span> ConcurrencyTest2().testThread();
+  &#125;
+&#125;</code></pre></div>
+
+<h2 id="3-死锁"><a href="#3-死锁" class="headerlink" title="3. 死锁"></a>3. 死锁</h2><p>通常，为了解决并发中的线程安全问题，会采用加锁的机制：也就是通过加锁对共享资源进行保护，使得同一个时间，只有一个线程对共享资源进行读或者写操作，这样就避免了共享资源的并发更新，保证了数据安全。</p>
+<p>锁在解决线程安全问题中非常有用，但是使用锁就有可能会产生死锁问题，导致程序运行异常。</p>
+<p>我们看下下面的例子：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConcurrencyTest3</span> </span>&#123;
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Object lockA = <span class="hljs-keyword">new</span> Object();
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Object lockB = <span class="hljs-keyword">new</span> Object();
+
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">runThread1</span><span class="hljs-params">()</span> </span>&#123;
+    Thread thread = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() &#123;
+      <span class="hljs-meta">@Override</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">synchronized</span> (lockA) &#123; <span class="hljs-comment">// 先获取锁A</span>
+          System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 获取锁 A 成功&quot;</span>);
+          TimeUnit.SECONDS.sleep(<span class="hljs-number">10</span>); <span class="hljs-comment">// 省略try-catch</span>
+          System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 尝试获取锁 B&quot;</span>);
+          <span class="hljs-keyword">synchronized</span> (lockB) &#123; <span class="hljs-comment">// 再获取锁B</span>
+            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 获取锁 B 成功&quot;</span>);
+          &#125;
+        &#125;
+      &#125;
+    &#125;, <span class="hljs-string">&quot;thread-1&quot;</span>);
+    thread.start();
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">runThread2</span><span class="hljs-params">()</span> </span>&#123;
+    Thread thread = <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() &#123;
+      <span class="hljs-meta">@Override</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">synchronized</span> (lockB) &#123; <span class="hljs-comment">// 先获取锁B</span>
+          System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 获取锁 B 成功&quot;</span>);
+          TimeUnit.SECONDS.sleep(<span class="hljs-number">10</span>); <span class="hljs-comment">// 省略try-catch</span>
+          System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 尝试获取锁 A &quot;</span>);
+          <span class="hljs-keyword">synchronized</span> (lockA) &#123; <span class="hljs-comment">// 再获取锁A</span>
+            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 获取锁 A 成功&quot;</span>);
+          &#125;
+        &#125;
+      &#125;
+    &#125;, <span class="hljs-string">&quot;thread-2&quot;</span>);
+    thread.start();
+  &#125;
+  
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    runThread1();
+    runThread2();
+  &#125;
+&#125;</code></pre></div>
+
+<p>在这个例子中，我们可以看到有两个锁对象<code>lockA</code>和<code>lockB</code>，并且有两个线程<code>thread-1</code>和<code>thread-2</code>。</p>
+<p>在<code>thread-1</code>中，首先获取<code>lockA</code>的锁，然后休眠10秒，然后再获取<code>lockB</code>的锁；在<code>thread-2</code>中，首先获取<code>lockB</code>的锁，然后休眠10秒，然后再获取<code>lockA</code>的锁，此时，死锁就产生了。</p>
+<p>由于<code>thread-1</code>和<code>thread-2</code>分别获取了lockA和lockB的锁，当<code>thread-1</code>休眠10秒结束后，尝试获取<code>lockB</code>的锁，但<code>lockB</code>的锁此时被<code>thread-2</code>占有而无法获取到，所以需要阻塞等待，在等待过程中，<code>thread-1</code>会一直持有<code>lockA</code>的锁；同样的，对于<code>thread-2</code>来说，当它需要获取<code>lockA</code>的锁时，由于<code>thread-1</code>一直持有不释放，导致<code>thread-2</code>无法获取成功，所以也会等待，并一直持有<code>lockB</code>的锁。两个线程一直等待对方所持有的锁而无法获取到，这就形成了死锁。</p>
+<p>所以死锁就是：每个线程都在等待其他线程释放资源，而其他资源也在等待每个线程释放资源，没有线程先释放自己的资源，这种情况会产生死锁，所有线程都会无限的等待下去。</p>
+<p><strong>造成死锁有4个必要条件：</strong></p>
+<ul>
+<li><code>互斥条件</code>：在一段时间内某资源只由一个线程占用。如果此时还有其它线程请求资源，只能等待，直至占有的线程释放资源。</li>
+<li><code>请求和保持条件</code>：指线程已经持有至少一个资源，但又需要新的资源，而该资源已被其它线程占有，此时线程阻塞，并保持对资源的占有。</li>
+<li><code>不剥夺条件</code>：指对于线程获得的资源，在未使用完之前，不能被剥夺，只能在使用完时才可以释放。</li>
+<li><code>循环等待</code>：指发生死锁时，必然存在至少两个线程互相等待的情况</li>
+</ul>
+<p>对于上述4个条件，<strong>破坏其中一个条件就可以打破死锁</strong>。</p>
+<h1 id="线程安全的三大问题"><a href="#线程安全的三大问题" class="headerlink" title="线程安全的三大问题"></a>线程安全的三大问题</h1><p>在上面讲到的几种并发常见的问题中，线程安全问题是最复杂且最常遇到的问题。为什么线程安全问题最复杂呢，主要是因为它受计算机硬件设备的发展、操作系统的原理、Java虚拟机的设计等原因的共同影响。</p>
+<p>并发主要带来了线程安全的三大问题：<strong>可见性</strong>、<strong>原子性</strong>、<strong>有序性</strong>。下面我们一一进行叙述。</p>
+<h2 id="1-可见性"><a href="#1-可见性" class="headerlink" title="1. 可见性"></a>1. 可见性</h2><p>首先我们先简单介绍一下CPU的构成以及运行机制。</p>
+<p>在操作系统中，CPU和内存是重要的两个组成部分。CPU的作用是是进行程序指令的执行，而内存的作用是存储程序执行中的数据。CPU在执行过程中，会对内存中的数据进行读取和更新。但是CPU的执行速度比内存的操作速度快了几个数量级，如果每次数据的读取和存储都从内存中进行，则CPU的执行速度会非常慢。</p>
+<p>所以CPU在设计过程中，增加了多级缓存（CPU Cache），避免CPU与内存直接交互，提高访问内存的效率，CPU缓存的示意图如下：</p>
+<ul>
+<li>L1缓存容量最小，速度最快，每个核都有L1缓存；L1缓存一般又分为数据缓存L1D和指令缓存L1I</li>
+<li>L2缓存容量比L1大，速度比L1慢，每个核都有L2缓存</li>
+<li>L3缓存容量最大，速度最慢，多个核共享L3缓存</li>
+</ul>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/08/image-20210831221429441.png" srcset="/img/loading.gif" alt="image-20210831221429441"></p>
+<p>由于CPU在执行过程中，会优先从CPU Cache中获取数据，当多级CPU Cache中都没有数据时，才会到主内存进行数据加载，所以大多数时候CPU 都在操作Cache，而某个CPU核心中Cache的数据，对于其他CPU核心是不可见的：比如某个变量在核1中进行了+1操作，但是在另外一个核2中无法感知这个+1操作，获取的还是+1操作前的值，如果在核2中再进行计算操作，则两个核心中的数据就会不一致。</p>
+<p>CPU对线程的调度，是通过时间片分配算法进行的，每个线程的执行可能会在不同的CPU核心上进行上下文切换，所以如果一个线程在核1中对某个共享变量进行了更新，另外一个线程调度到核2执行时无法感知之前的更新，则就出现了数据不一致，这就是可见性问题。</p>
+<p>出现这种情况，就需要启用<strong>缓存一致性协议</strong>，比如通过对共享变量增加<code>volatile</code>修饰，则变量在更新时，会立即刷新到主内存中；而且还会通过总线通知其他CPU缓存的该共享变量失效，需要重新从主内存进行读取。</p>
+<h2 id="2-原子性"><a href="#2-原子性" class="headerlink" title="2. 原子性"></a>2. 原子性</h2><p><strong>原子性是指一个操作，要么全部执行，要么全部不执行</strong>。在上面线程安全的示例代码中，我们对<code>num</code>进行的操作是<code>num++</code>，两个线程计算的结果，最终总是小于期望的结果。这其实是因为<code>num++</code>操作不是一个原子操作。我们来详细分析一下。</p>
+<p>对于<code>num++</code>操作来说，其实是包含了3个步骤：读取num的值，执行num+1操作，将num+1的新值重新赋值给num（写回内存）。</p>
+<p>当两个线程开始执行后，每个线程都会把num的值读取到CPU缓存中，并执行+1操作，然后再把计算后的值写回内存。由于两个线程在执行过程会被CPU进行调度而产生上下文切换，所以<code>num++</code>操作就可能被拆成多次执行，也就是变成了非原子操作。</p>
+<p>比如当num = 0是，当线程t1将执行<code>num++</code>后变为1，则将<code>num = 1</code>写回到内存；线程t2在执行时，可能从内存中获取的值也是<code>num = 0</code>，执行<code>num++</code>后变为1，这次又将<code>num = 1</code>写回到内存，导致前一个更新被覆盖。这就是原子性问题的原因。</p>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/08/image-20210831222516656.png" srcset="/img/loading.gif" alt="image-20210831222516656"></p>
+<p>在Java中，我们可以使用synchronized、lock或者atomic原子操作类，来避免出现原子问题，我们将在后面进行深入的探讨。</p>
+<h2 id="3-有序性"><a href="#3-有序性" class="headerlink" title="3. 有序性"></a>3. 有序性</h2><p>有序性是指程序按照代码的先后顺序进行执行。而编译器为了优化程序的性能，有时候会改变语句的先后顺序。</p>
+<p>比如<code>a = 1; b = 2;</code> 两个语句，编译器优化有有可能为<code>b = 2; a = 1;</code>。虽然对于这两个语句来说，上下调整顺序对执行的结果并没有什么影响，但是一旦在多线程环境下，对于某个共享变量的执行顺序调整后，就有可能影响程序执行的结果。</p>
+<p>在Java的内存模型定义中，使用happens-before原则来规定编译器和处理器何时需要禁止重排序，来保证指令执行的有序性，这部分内容我们也会在后面详细探讨。</p>
+<h2 id="4-三大问题总结"><a href="#4-三大问题总结" class="headerlink" title="4. 三大问题总结"></a>4. 三大问题总结</h2><p>通过上面的内容，我们可以针对三大线程安全做如下总结：</p>
+<ul>
+<li>CPU缓存的设计带来了可见性问题</li>
+<li>多线程操作带来了原子性问题</li>
+<li>指令重排序带来了有序性问题</li>
+</ul>
+<p>所以，并发编程的核心，就是如何有效的解决上述三大问题，保证程序的可靠性。在后面的章节，我们将会更深入的探讨并发编程的重点内容。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>到此，本文主要介绍了并发编程的一些基础知识，以及并发编程带来的三大核心问题，在后面我们将会继续探讨在Java中如何解决并发编程的问题，欢迎各位小伙伴持续关注。</p>
+<hr>
+<blockquote>
+<p><strong>我是「 毛与帆 」，如果本文对你有帮助，欢迎向各位小伙伴点赞、评论和关注，感谢各位老铁，我们下期见</strong></p>
+</blockquote>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/08/mp_white-1629728084395.png" srcset="/img/loading.gif" alt="mp_white"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E7%B3%BB%E5%88%97/">深入理解Java系列</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/006-java-thread-basic/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深入理解Java系列 | 线程基础</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/004-java-linked-blocking-queue/">
+                        <span class="hidden-mobile">深入理解Java系列 | LinkedBlockingQueue用法详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    Fluid.utils.waitElementVisible('vcomments', function() {
+      Fluid.utils.createScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "i66C30gscBCnbh1QrYsyrgXo-gzGzoHsz",
+          app_key: "NUKXgtKOOWyEDz1FYJ8wrdHd",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: true,
+          serverURLs: "",
+        });
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the
+    <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments powered by Valine.</a>
+  </noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

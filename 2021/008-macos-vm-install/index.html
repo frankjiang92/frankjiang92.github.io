@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="你好呀">
+  <meta name="author" content="毛与帆">
+  <meta name="keywords" content="">
+  <title>开源推荐 | 如何一键安装MacOS虚拟机 - 毛与帆的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"frankjiang92.github.io","root":"/","version":"1.8.5","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"i66C30gscBCnbh1QrYsyrgXo-gzGzoHsz","app_key":"NUKXgtKOOWyEDz1FYJ8wrdHd","server_url":"https://i66c30gs.lc-cn-n1-shared.com"}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 45vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>毛与帆的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/more-3.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="开源推荐 | 如何一键安装MacOS虚拟机">
+              
+                开源推荐 | 如何一键安装MacOS虚拟机
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      毛与帆
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-09-07 22:15" pubdate>
+        2021年9月7日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      841 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      9
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">开源推荐 | 如何一键安装MacOS虚拟机</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>Hi 大家好，我是「 毛与帆 」，一个热爱技术的后端工程师，感谢你的关注！</p>
+</blockquote>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/08/mp_white-1629728084395.png" srcset="/img/loading.gif" alt="欢迎关注我的公众号「 毛与帆 」"></p>
+<p>最近逛GitHub发现了一个超级黑科技的项目，可以<strong>通过脚本在Windows电脑上一键安装MacOS虚拟机</strong>，如果你想入手一台Mac电脑，但又考虑到高昂的价格，你可以在Windows上安装MacOS来尝尝鲜，下来我们一起来看下吧。</p>
+<p>这个开源项目就是<a target="_blank" rel="noopener" href="https://github.com/myspaghetti/macos-virtualbox">macos-virtualbox</a>，GitHub的地址为：<code>https://github.com/myspaghetti/macos-virtualbox</code>，目前这个项目已经有<code>1.1w</code>的star，非常的受欢迎。</p>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/09/image-20210907222428072.png" srcset="/img/loading.gif" alt="项目主页"></p>
+<p>下面我们来看一下如何在Windows电脑上安装MacOS虚拟机吧。</p>
+<h2 id="1-需要哪些依赖？"><a href="#1-需要哪些依赖？" class="headerlink" title="1. 需要哪些依赖？"></a>1. 需要哪些依赖？</h2><p>首先，我们需要电脑满足如下条件才可以安装：</p>
+<ul>
+<li><strong>8GB以上的内存</strong></li>
+<li><strong>磁盘空间至少50GB以上</strong></li>
+<li><strong>安装VirtualBox 6.1.6 以上的版本</strong></li>
+<li><strong>安装Cygwin工具，并安装所需要依赖</strong>：<code>bash</code> <code>coreutils</code> <code>gzip</code> <code>unzip</code> <code>wget</code> <code>xxd</code> <code>tesseract-ocr</code> 和 <code>tesseract-ocr-eng</code></li>
+</ul>
+<h2 id="2-开始安装MacOS虚拟机"><a href="#2-开始安装MacOS虚拟机" class="headerlink" title="2. 开始安装MacOS虚拟机"></a>2. 开始安装MacOS虚拟机</h2><h3 id="2-1-打开Cygwin64-Terminal工具"><a href="#2-1-打开Cygwin64-Terminal工具" class="headerlink" title="2.1 打开Cygwin64 Terminal工具"></a>2.1 打开<code>Cygwin64 Terminal</code>工具</h3><p>首先，我们找到<code>Cygwin64 Terminal</code>工具并打开它，这个是一个命令行工具，后面的操作基本都在这个命令行工具内就可以完成。</p>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/09/image-20210907223137451.png" srcset="/img/loading.gif" alt="打开Terminal"></p>
+<h3 id="2-2-切换到我们需要安装的目录"><a href="#2-2-切换到我们需要安装的目录" class="headerlink" title="2.2 切换到我们需要安装的目录"></a>2.2 切换到我们需要安装的目录</h3><p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/09/image-20210907223307319.png" srcset="/img/loading.gif" alt="切换到目录"></p>
+<h3 id="2-3-下载安装脚本"><a href="#2-3-下载安装脚本" class="headerlink" title="2.3 下载安装脚本"></a>2.3 下载安装脚本</h3><p>在命令行中下面的命令，下载脚本<code>macos-guest-virtualbox.sh</code></p>
+<div class="hljs"><pre><code class="hljs bash">wget https://raw.githubusercontent.com/myspaghetti/macos-guest-virtualbox/master/macos-guest-virtualbox.sh</code></pre></div>
+
+<h3 id="2-4-执行安装脚本"><a href="#2-4-执行安装脚本" class="headerlink" title="2.4 执行安装脚本"></a>2.4 执行安装脚本</h3><p>然后在命令行中执行如下命令：</p>
+<div class="hljs"><pre><code class="hljs bash">./macos-guest-virtualbox.sh</code></pre></div>
+
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/09/image-20210905151457769.png" srcset="/img/loading.gif" alt="开始安装"></p>
+<p>然后就可以开始安装了，你只需要再一些需要确认的地方敲击<code>回车键</code>进行确认，即可继续安装</p>
+<p>安装过程耗时有比较长，因为脚本需要下载MacOS的安装镜像，等镜像下载完成，就会自动启动<code>VirtualBox</code>的虚拟机，我们可以在<code>VirtualBox</code>内看到虚拟机正在启动，如下图所示：</p>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/09/image-20210907224000.png" srcset="/img/loading.gif" alt="VirtualBox界面"></p>
+<p>然后可以看到如下图所示的安装界面，只要静静的等待安装完成即可：</p>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/09/image-20210905150220821.png" srcset="/img/loading.gif" alt="安装界面"></p>
+<p>最后安装完成后，在命令行中会看到<code>That&#39;s it! Enjoy you virtual machine</code>，表示虚拟机已经安装完成了。</p>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/09/image-20210905151409819.png" srcset="/img/loading.gif" alt="安装完成"></p>
+<p>最后，你可以在VirtualBox中启动虚拟机，刚开始又有一些配置，按照系统的提示一步一步选择即可完成机器的创建。</p>
+<h2 id="3-安装后的效果"><a href="#3-安装后的效果" class="headerlink" title="3. 安装后的效果"></a>3. 安装后的效果</h2><p>最后，放上几张我安装之后的效果给大家看一下，基本的功能使用都正常，使用起来还是比较流畅</p>
+<p><img src="/2021/008-macos-vm-install/image-20210907225313022.png" srcset="/img/loading.gif" alt="APP列表"></p>
+<p><img src="/2021/008-macos-vm-install/image-20210907225214724.png" srcset="/img/loading.gif" alt="xcode界面"></p>
+<p><img src="/2021/008-macos-vm-install/image-20210907225548872.png" srcset="/img/loading.gif" alt="APP Store界面"></p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>在上面的安装过程中，总体还是比较顺利的，并没有遇到难以解决的问题，所以这也是这个项目如此受欢迎的原因。</p>
+<p>由于各个电脑硬件设备的不同，以及系统及软件的不同，安装虚拟机的过程可能会遇到一些问题，小伙伴们也可以在网上搜索问题原因并针对性的解决，也可以<strong>在后台给我留言</strong>，我们一起解决。</p>
+<p>最后，希望可以体验MacOS的小伙伴，可以行动起来了！</p>
+<p><strong>项目的GitHub地址</strong>：<code>https://github.com/myspaghetti/macos-virtualbox</code></p>
+<hr>
+<blockquote>
+<p><strong>我是「 毛与帆 」，如果本文对你有帮助，欢迎向各位小伙伴点赞、评论和关注，感谢各位老铁，我们下期见</strong></p>
+</blockquote>
+<p><img src="https://gitee.com/FrankJiang92/blog-img/raw/master/blog/2021/08/mp_white-1629728084395.png" srcset="/img/loading.gif" alt="mp_white"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%BC%80%E6%BA%90%E6%8E%A8%E8%8D%90/">开源推荐</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BC%80%E6%BA%90/">开源</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/007-java-memory-model/">
+                        <span class="hidden-mobile">深入理解Java系列 | Java线程模型与volatile</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    Fluid.utils.waitElementVisible('vcomments', function() {
+      Fluid.utils.createScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "i66C30gscBCnbh1QrYsyrgXo-gzGzoHsz",
+          app_key: "NUKXgtKOOWyEDz1FYJ8wrdHd",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: true,
+          serverURLs: "",
+        });
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the
+    <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments powered by Valine.</a>
+  </noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

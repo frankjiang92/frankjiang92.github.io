@@ -1,0 +1,8 @@
+.markdown-body blockquote {
+    background-color: #e2f0e5;
+    border-color: #49a75f;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    margin: 1.5rem 0;
+    color: #3c4858;
+  }
